@@ -1,0 +1,14 @@
+:root {
+   --border-radius: 13px;
+   --bg-primary: #6366f1;
+   --bg-primary-hover: #818cf8;
+   --shadow-base: 0px 10px 36px 8px rgba(0, 0, 0, 0.2);
+}
+
+* {
+   box-sizing: border-box;
+   margin: 0;
+   padding: 0;
+   border: none;
+   background-color: transparent;
+}

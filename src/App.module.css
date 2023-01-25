@@ -1,0 +1,25 @@
+.app-container {
+   position: relative;
+   width: 100%;
+   min-height: 100vh;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   gap: 2rem;
+}
+
+button {
+   padding: 0.5rem 1rem;
+   border-radius: var(--border-radius);
+   background-color: var(--bg-primary);
+   color: #fff;
+   transition: color, background-color ease-in-out 250ms;
+   font-weight: 600;
+   font-size: 14px;
+}
+
+button:hover {
+   background-color: var(--bg-primary-hover);
+   cursor: pointer;
+}

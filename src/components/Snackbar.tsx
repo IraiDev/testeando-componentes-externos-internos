@@ -1,8 +1,9 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from 'react'
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react'
+import { isEqual } from 'lodash'
 import uuid from 'react-id-generator'
 import styles from './Snackbar.module.css'
 
-export interface SnackbarProps {
+interface SnackbarProps {
    message: string
    hideTime: number
    autoHide: boolean
@@ -50,11 +51,11 @@ export function SnackbarProvider({
 }) {
    const [stackedSnackbars, setStackedSnackbars] = useState<SnackbarArrProps[]>([])
 
-   const handleClose = (key: string) => {
+   const handleClose = useCallback((key: string) => {
       setStackedSnackbars((prevState) => prevState.filter((prev) => prev.key !== key))
-   }
+   }, [])
 
-   const snackbarApiResponse = (props: SnackbarApiProps) => {
+   const snackbarApiResponse = useCallback((props: SnackbarApiProps) => {
       const { ok, errorHideTime, successHideTime, message } = props
 
       setStackedSnackbars((prevState) => {
@@ -78,9 +79,9 @@ export function SnackbarProvider({
          const newArr = prevState.filter((_, idx) => idx !== 0)
          return [...newArr, newElement]
       })
-   }
+   }, [])
 
-   const snackbar = (props: SnackbarProps) => {
+   const snackbar = useCallback((props: SnackbarProps) => {
       setStackedSnackbars((prevState) => {
          const newElement = { ...prevState, ...props, key: uuid() }
 
@@ -95,7 +96,7 @@ export function SnackbarProvider({
          const newArr = prevState.filter((_, idx) => idx !== 0)
          return [...newArr, newElement]
       })
-   }
+   }, [])
 
    return (
       <SnackbarContext.Provider
@@ -122,20 +123,37 @@ interface SnackbarItemProps {
 }
 
 function SnackbarItem({ item, onClose }: SnackbarItemProps) {
+   const [localItem, setLocalItem] = useState<SnackbarArrProps>(item)
+   const [holdSnackbar, setHoldSnackbar] = useState(false)
+
+   const handleHoldSnackbar = (newState: boolean) => setHoldSnackbar(newState)
+
    useEffect(() => {
-      if (!item.autoHide) return
+      if (holdSnackbar) {
+         setLocalItem((prevState) => {
+            const newState = { ...localItem, hideTime: 1000 }
+            if (isEqual(prevState, newState)) return prevState
+            return newState
+         })
+         return
+      }
+      if (!localItem.autoHide) return
 
       const timeout = setTimeout(() => {
-         onClose(item.key)
-      }, item.hideTime ?? 2000)
+         onClose(localItem.key)
+      }, localItem.hideTime)
 
       return () => {
          clearTimeout(timeout)
       }
-   }, [item])
+   }, [localItem, holdSnackbar])
 
    return (
-      <li className={styles.wrapper}>
+      <li
+         className={styles.wrapper}
+         onMouseEnter={() => handleHoldSnackbar(true)}
+         onMouseLeave={() => handleHoldSnackbar(false)}
+      >
          <div className={styles.container}>
             <span>{item.message}</span>
             <button onClick={() => onClose(item.key)} className={styles.closer}>

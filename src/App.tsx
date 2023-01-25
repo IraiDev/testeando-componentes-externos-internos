@@ -10,7 +10,7 @@ function App() {
             onClick={() =>
                snackbar({
                   message: 'normal alert',
-                  hideTime: 2000,
+                  hideTime: 6000,
                   autoHide: true,
                })
             }
@@ -21,9 +21,9 @@ function App() {
             onClick={() =>
                snackbarApiResponse({
                   message: 'api alert',
-                  errorHideTime: 4000,
+                  errorHideTime: 6000,
                   ok: true,
-                  successHideTime: 3000,
+                  successHideTime: 6000,
                })
             }
          >

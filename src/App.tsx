@@ -1,35 +1,20 @@
-import styles from './App.module.css'
-import { useSnackbar } from './components'
+import { lazy, Suspense } from 'react'
+import { HashRouter, Routes, Route } from 'react-router-dom'
+import { SnackbarProvider } from './components/snackbar'
+
+const HomePage = lazy(() => import('./pages'))
 
 function App() {
-   const { snackbar, snackbarApiResponse } = useSnackbar()
-
    return (
-      <div className={styles['app-container']}>
-         <button
-            onClick={() =>
-               snackbar({
-                  message: 'normal alert',
-                  hideTime: 6000,
-                  autoHide: true,
-               })
-            }
-         >
-            Normal snackbar
-         </button>
-         <button
-            onClick={() =>
-               snackbarApiResponse({
-                  message: 'api alert',
-                  errorHideTime: 6000,
-                  ok: true,
-                  successHideTime: 6000,
-               })
-            }
-         >
-            API snackbar
-         </button>
-      </div>
+      <Suspense fallback={<>loading...</>}>
+         <SnackbarProvider maxStack={4}>
+            <HashRouter>
+               <Routes>
+                  <Route path="/" element={<HomePage />} />
+               </Routes>
+            </HashRouter>
+         </SnackbarProvider>
+      </Suspense>
    )
 }
 

@@ -12,3 +12,20 @@
    border: none;
    background-color: transparent;
 }
+
+.animation-enter {
+   opacity: 0;
+}
+.animation-exit {
+   opacity: 1;
+}
+.animation-enter-active {
+   opacity: 1;
+}
+.animation-exit-active {
+   opacity: 0;
+}
+.animation-enter-active,
+.animation-exit-active {
+   transition: opacity 5000ms;
+}

@@ -3,6 +3,7 @@
    --bg-primary: #6366f1;
    --bg-primary-hover: #818cf8;
    --shadow-base: 0px 10px 36px 8px rgba(0, 0, 0, 0.2);
+   --animation-duration: 500ms;
 }
 
 * {
@@ -11,21 +12,4 @@
    padding: 0;
    border: none;
    background-color: transparent;
-}
-
-.animation-enter {
-   opacity: 0;
-}
-.animation-exit {
-   opacity: 1;
-}
-.animation-enter-active {
-   opacity: 1;
-}
-.animation-exit-active {
-   opacity: 0;
-}
-.animation-enter-active,
-.animation-exit-active {
-   transition: opacity 5000ms;
 }

@@ -2,6 +2,7 @@ import { createContext, ReactNode, useCallback, useContext, useState } from 'rea
 import { SnackbarItem } from './SnackbarItem'
 import uuid from 'react-id-generator'
 import styles from './Snackbar.module.css'
+import { TransitionGroup } from 'react-transition-group'
 
 export interface SnackbarProps extends ItemProps {
    key: string
@@ -78,7 +79,7 @@ export function SnackbarProvider({ children, maxStack = 3 }: Props) {
 
    const snackbar = useCallback((props: ItemProps) => {
       setSnackbars((prevState) => {
-         const newElement = { ...prevState, ...props, key: uuid() }
+         const newElement = { ...props, key: uuid() }
 
          if (prevState.length === 0) {
             return [newElement]
@@ -103,9 +104,11 @@ export function SnackbarProvider({ children, maxStack = 3 }: Props) {
          <>
             {children}
             <ul className={styles.list}>
+               {/* <TransitionGroup className={styles.list}> */}
                {snackbars.map((item) => (
                   <SnackbarItem key={item.key} item={item} onClose={handleClose} />
                ))}
+               {/* </TransitionGroup> */}
             </ul>
          </>
       </SnackbarContext.Provider>

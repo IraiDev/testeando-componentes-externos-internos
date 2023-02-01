@@ -48,20 +48,39 @@
    color: #fff;
 }
 
+.animation-enter {
+   opacity: 0;
+   animation: snackbar-enter-animation 500ms;
+}
+.animation-exit {
+   opacity: 1;
+   animation: snackbar-exit-animation 500ms;
+}
+.animation-enter-active {
+   opacity: 1;
+}
+.animation-exit-active {
+   opacity: 0;
+}
+
 @keyframes snackbar-enter-animation {
    0% {
       opacity: 0;
+      transform: translate(-200px, 100px) scale(0.1);
    }
    100% {
       opacity: 1;
+      transform: translate(0px, 0px) scale(1);
    }
 }
 
-@keyframes snackbar-leave-animation {
+@keyframes snackbar-exit-animation {
    0% {
       opacity: 1;
+      transform: translate(0px, 0px) scale(1);
    }
    100% {
       opacity: 0;
+      transform: translate(-200px, 100px) scale(0.1);
    }
 }

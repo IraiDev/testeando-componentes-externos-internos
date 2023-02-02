@@ -1,8 +1,7 @@
-import { createContext, ReactNode, useCallback, useContext, useState } from 'react'
+import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from 'react'
 import { SnackbarItem } from './SnackbarItem'
 import uuid from 'react-id-generator'
 import styles from './Snackbar.module.css'
-import { TransitionGroup } from 'react-transition-group'
 
 export interface SnackbarProps extends ItemProps {
    key: string
@@ -10,6 +9,7 @@ export interface SnackbarProps extends ItemProps {
 interface Props {
    children: ReactNode
    maxStack?: number
+   placemente?: 'top-left' | 'bottom-left' | 'top-right' | 'bottom-right'
 }
 interface ItemProps {
    message: string
@@ -36,6 +36,12 @@ interface ContextProps {
    snackbar: (injectedProps: ItemProps) => void
    snackbarApiResponse: (injectedProps: SnackbarApiProps) => void
 }
+interface PlacementProps {
+   'top-left': string
+   'bottom-left': string
+   'top-right': string
+   'bottom-right': string
+}
 
 const SnackbarContext = createContext<ContextProps>({
    snackbar: (props: ItemProps) => {},
@@ -44,8 +50,18 @@ const SnackbarContext = createContext<ContextProps>({
 
 export const useSnackbar = () => useContext(SnackbarContext)
 
-export function SnackbarProvider({ children, maxStack = 3 }: Props) {
+export function SnackbarProvider({ children, maxStack = 3, placemente = 'bottom-left' }: Props) {
    const [snackbars, setSnackbars] = useState<SnackbarProps[]>([])
+
+   const selectedPosition: PlacementProps = useMemo(
+      () => ({
+         'bottom-left': styles['bottom-left'],
+         'bottom-right': styles['bottom-right'],
+         'top-left': styles['top-left'],
+         'top-right': styles['top-right'],
+      }),
+      []
+   )
 
    const handleClose = useCallback((key: string) => {
       setSnackbars((prevState) => prevState.filter((prev) => prev.key !== key))
@@ -103,7 +119,7 @@ export function SnackbarProvider({ children, maxStack = 3 }: Props) {
       >
          <>
             {children}
-            <ul className={styles.list}>
+            <ul className={`${styles.list} ${selectedPosition[placemente]}`}>
                {/* <TransitionGroup className={styles.list}> */}
                {snackbars.map((item) => (
                   <SnackbarItem key={item.key} item={item} onClose={handleClose} />

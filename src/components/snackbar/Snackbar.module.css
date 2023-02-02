@@ -1,19 +1,23 @@
 .list {
+   box-sizing: border-box;
+   max-height: 100%;
+   pointer-events: none;
    display: flex;
-   flex-direction: column;
+   flex-direction: column-reverse;
    gap: 1rem;
    position: fixed;
-   left: 15px;
-   bottom: 15px;
+   height: auto;
 }
 
 .wrapper {
+   display: block;
    padding: 0.75rem 1rem;
    border-radius: var(--border-radius);
    background-color: var(--bg-primary);
    box-shadow: var(--shadow-base);
    color: #fff;
    font-size: large;
+   list-style: none;
 }
 
 .container {
@@ -63,24 +67,44 @@
    opacity: 0;
 }
 
+.bottom-left {
+   left: 15px;
+   bottom: 15px;
+}
+
+.top-left {
+   left: 15px;
+   top: 15px;
+}
+
+.bottom-right {
+   right: 15px;
+   bottom: 15px;
+}
+
+.top-right {
+   right: 15px;
+   top: 15px;
+}
+
 @keyframes snackbar-enter-animation {
    0% {
       opacity: 0;
-      transform: translate(-200px, 100px) scale(0.1);
+      transform: translate(-200px, 0px);
    }
    100% {
       opacity: 1;
-      transform: translate(0px, 0px) scale(1);
+      transform: translate(0px, 0px);
    }
 }
 
 @keyframes snackbar-exit-animation {
    0% {
       opacity: 1;
-      transform: translate(0px, 0px) scale(1);
+      transform: translate(0px, 0px);
    }
    100% {
       opacity: 0;
-      transform: translate(-200px, 100px) scale(0.1);
+      transform: translate(0px, 100px);
    }
 }

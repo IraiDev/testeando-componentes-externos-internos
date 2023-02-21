@@ -1,8 +1,15 @@
 import { useSnackbar } from '../components/snackbar'
+import { useSnackbarStore } from '../components/ui'
 import styles from './HomePage.module.css'
+import { useEffect } from 'react'
 
 function HomePage() {
    const { snackbar, snackbarApiResponse } = useSnackbar()
+
+   useEffect(() => {
+      console.log('renders home')
+   })
+
    return (
       <div className={styles.container}>
          <button

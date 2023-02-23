@@ -1,12 +1,10 @@
 .list {
    box-sizing: border-box;
-   max-height: 100%;
-   pointer-events: none;
    display: flex;
-   flex-direction: column-reverse;
    gap: 1rem;
+   flex-direction: column;
    position: fixed;
-   height: auto;
+   transition: all 300ms;
 }
 
 .wrapper {
@@ -23,33 +21,26 @@
 .container {
    display: flex;
    justify-content: space-between;
-   align-items: center;
-   position: relative;
+   align-items: start;
    width: 280px;
 }
 
 .closer {
-   position: absolute;
-   right: -25px;
-   top: -25px;
    padding: 0;
+   transform: rotate(45deg);
+   font-size: x-large;
+   color: #fff;
+   transition: background-color 200ms;
    height: 32px;
    width: 32px;
-   display: flex;
-   justify-content: center;
-   align-items: center;
    border-radius: 9999px;
-   transform: rotate(45deg);
-   font-size: xx-large;
-   background-color: #fff;
-   color: #0009;
-   box-shadow: var(--shadow-base);
+   display: grid;
+   place-items: center;
 }
 
 .closer:hover {
-   background-color: red;
    cursor: pointer;
-   color: #fff;
+   background-color: #fff2;
 }
 
 .animation-enter {
@@ -105,6 +96,6 @@
    }
    100% {
       opacity: 0;
-      transform: translate(0px, 100px);
+      transform: translate(-200px, 0px);
    }
 }

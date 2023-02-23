@@ -9,15 +9,15 @@ const AboutPage = lazy(() => import('./pages/about'))
 function App() {
    return (
       <Suspense fallback={<>loading...</>}>
-         <SnackbarProvider maxStack={4}>
-            {/* <Snackbar /> */}
-            <HashRouter>
-               <Routes>
-                  <Route path="/" element={<HomePage />} />
-                  <Route path="/" element={<AboutPage />} />
-               </Routes>
-            </HashRouter>
-         </SnackbarProvider>
+         {/* <SnackbarProvider maxStack={4}> */}
+         <Snackbar />
+         <HashRouter>
+            <Routes>
+               <Route path="/" element={<HomePage />} />
+               <Route path="/" element={<AboutPage />} />
+            </Routes>
+         </HashRouter>
+         {/* </SnackbarProvider> */}
       </Suspense>
    )
 }

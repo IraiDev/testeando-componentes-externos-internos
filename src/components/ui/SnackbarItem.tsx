@@ -15,7 +15,6 @@ export function SnackbarItem({ item, onClose }: Props) {
    const [localItem, setLocalItem] = useState<SnackbarProps>(item)
    const [holdSnackbar, setHoldSnackbar] = useState(false)
    const [isShowing, setIsShowing] = useState(false)
-   const ref = useRef<HTMLLIElement>(null)
 
    const handleHoldSnackbar = (newState: boolean) => setHoldSnackbar(newState)
 
@@ -51,9 +50,9 @@ export function SnackbarItem({ item, onClose }: Props) {
 
    return (
       <CSSTransition
-         nodeRef={ref}
-         timeout={ANIMATION_DURATION}
+         unmountOnExit
          in={isShowing}
+         timeout={ANIMATION_DURATION}
          classNames={{
             enter: styles['animation-enter'],
             exit: styles['animation-exit'],
@@ -62,7 +61,6 @@ export function SnackbarItem({ item, onClose }: Props) {
          }}
       >
          <li
-            ref={ref}
             className={styles.wrapper}
             onMouseEnter={() => handleHoldSnackbar(true)}
             onMouseLeave={() => handleHoldSnackbar(false)}

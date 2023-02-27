@@ -1,5 +1,5 @@
 import { useSnackbar } from '../components/snackbar'
-import { useSnackbarStore } from '../components/ui'
+import { Select, useSnackbarStore } from '../components/ui'
 import styles from './HomePage.module.css'
 import { useEffect } from 'react'
 
@@ -13,6 +13,8 @@ function HomePage() {
    return (
       <>
          <div className={styles.container}>
+            <Select />
+
             <button
                onClick={() =>
                   snackbar({

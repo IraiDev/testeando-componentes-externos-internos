@@ -1,0 +1,69 @@
+.wrapper {
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   gap: 0.25rem;
+}
+
+.label {
+   margin-left: 5px;
+}
+
+.input {
+   display: flex;
+   gap: 0.65rem;
+   align-items: center;
+   width: 100%;
+   padding: 10px 15px;
+   padding-right: 8px;
+   border-radius: var(--border-radius);
+   background-color: rgb(238, 238, 238);
+   border: 2px solid transparent;
+   transition: border-color 200ms;
+}
+
+.input:hover {
+   border-color: var(--bg-primary);
+   cursor: pointer;
+}
+
+.input input {
+   border: none;
+   outline: none;
+}
+
+.options {
+   max-height: 200px;
+   overflow: auto;
+   position: absolute;
+   margin-top: 10px;
+   top: 100%;
+   padding: 5px;
+   background-color: #fff;
+   box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+   border-radius: var(--border-radius);
+   width: 100%;
+}
+
+.options li {
+   list-style: none;
+   padding: 10px;
+   transition: background-color 200ms, color 200ms;
+   border-radius: var(--border-radius);
+   margin-bottom: 2px;
+}
+
+.options li:last-child {
+   margin-bottom: 0;
+}
+
+.options li:hover {
+   background-color: rgb(238, 238, 238);
+   color: #000;
+   cursor: pointer;
+}
+
+.options-active {
+   background-color: var(--bg-primary);
+   color: #fff;
+}

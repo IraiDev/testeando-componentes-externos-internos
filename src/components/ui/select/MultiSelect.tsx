@@ -1,12 +1,4 @@
-import {
-   useState,
-   useRef,
-   useEffect,
-   useLayoutEffect,
-   ChangeEvent,
-   useMemo,
-   useCallback,
-} from 'react'
+import { useState, useRef, useEffect, ChangeEvent, useMemo, useCallback } from 'react'
 import { SelectorIcon } from '../../icons'
 import { AvatarSelect } from './AvatarSelect'
 import { Option } from './Select'
@@ -55,7 +47,7 @@ export function MultiSelect({
    }
 
    const handleSelectOption = (option: Option) => {
-      setIsOpen(false)
+      // setIsOpen(false)
       const values: ValueTypes = [...props.value, option.value.toString()]
       setInputValue('')
       props.onChange!({ target: { value: values, type: 'text', name: props.name } })
@@ -83,28 +75,25 @@ export function MultiSelect({
       setOptions(props.options.filter((option) => option.value.toString() === value.toString()))
    }
 
-   useLayoutEffect(() => {
-      setInputValue('')
-   }, [])
-
    useEffect(() => {
-      const handleOutsideClick = (event: any) => {
-         if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+      const handleOutsideClick = (e: MouseEvent) => {
+         if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
             setIsOpen(false)
             Boolean(props.onBlur) &&
                props.onBlur!({ target: { value: props.value, type: 'text', name: props.name } })
          }
       }
 
-      document.addEventListener('click', handleOutsideClick)
+      document.addEventListener('mousedown', handleOutsideClick)
 
       return () => {
-         document.removeEventListener('click', handleOutsideClick)
+         document.removeEventListener('mousedown', handleOutsideClick)
       }
    }, [wrapperRef])
 
    useEffect(() => {
-      setOptions(props.options)
+      setOptions(props.options.filter((opt) => !props.value.includes(opt.value.toString())))
+      setInputValue('')
    }, [props.options])
 
    return (
@@ -173,15 +162,14 @@ function MultiItems({
 
    return (
       <ul className={style['multiple-list']}>
-         <>
-            {filteredOptions.map((item) => (
-               <li key={item.value}>
-                  {LiContent(item)}
-                  <button onClick={() => onClear(item.value.toString())}>X</button>
-               </li>
-            ))}
-         </>
-         {children}
+         {filteredOptions.map((item) => (
+            <li key={item.value}>
+               {LiContent(item)}
+               <button onClick={() => onClear(item.value.toString())}>X</button>
+            </li>
+         ))}
+
+         <>{children}</>
       </ul>
    )
 }

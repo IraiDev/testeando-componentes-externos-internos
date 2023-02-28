@@ -27,8 +27,8 @@ const DEFAULT_OPTIONS: Option[] = [
 
 function HomePage() {
    const { snackbar, snackbarApiResponse } = useSnackbarStore()
-   const [select, setSelect] = useState<Option>(DEFAULT_OPTIONS[0])
-   const [multiSelect, setMultiSelect] = useState<ValueTypes>(['5'])
+   const [select, setSelect] = useState<Option>({ label: 'Summer Smith', value: '3' })
+   const [multiSelect, setMultiSelect] = useState<ValueTypes>(['5', '1'])
    const [options, setOptions] = useState<Option[]>([])
 
    useEffect(() => {
@@ -64,7 +64,7 @@ function HomePage() {
                onChange={(e: MultiSelectChange) => setMultiSelect(e.target.value)}
             />
 
-            <span>{multiSelect}</span>
+            <span>{JSON.stringify(select)}</span>
 
             <button
                onClick={() =>

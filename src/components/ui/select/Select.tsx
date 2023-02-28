@@ -72,28 +72,27 @@ export function Select({ placeholder = 'Seleccione...', findBy = 'label', ...pro
       setOptions(props.options.filter((option) => option.value.toString() === value.toString()))
    }
 
-   useLayoutEffect(() => {
-      setInputValue(props.value.label)
-   }, [])
-
    useEffect(() => {
-      const handleOutsideClick = (event: any) => {
-         if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+      const handleOutsideClick = (e: MouseEvent) => {
+         if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
             setIsOpen(false)
             Boolean(props.onBlur) &&
-               props.onBlur!({ target: { value: props.value, type: 'text' } })
+               props.onBlur!({ target: { value: props.value, type: 'text', name: props.name } })
          }
       }
 
-      document.addEventListener('click', handleOutsideClick)
+      document.addEventListener('mousedown', handleOutsideClick)
 
       return () => {
-         document.removeEventListener('click', handleOutsideClick)
+         document.removeEventListener('mousedown', handleOutsideClick)
       }
    }, [wrapperRef])
 
    useEffect(() => {
+      const newValue = props.options.find((opt) => opt.value.toString() === props.value?.value)
+      setInputValue(newValue?.label ?? '')
       setOptions(props.options)
+      setAvatar({ avatar: newValue?.avatar?.content, type: newValue?.avatar?.type! })
    }, [props.options])
 
    return (

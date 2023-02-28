@@ -14,7 +14,7 @@ export function SelectDropdown({ items = [], isOpen, onSelect, selectedValue }: 
    const [selected, setSelected] = useState<Option | undefined>(selectedValue)
 
    const handleSelectItem = (option: Option) => {
-      setSelected(option)
+      Boolean(selectedValue) && setSelected(option)
       onSelect(option)
    }
 

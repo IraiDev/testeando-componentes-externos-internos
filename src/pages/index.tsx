@@ -1,4 +1,3 @@
-import { useSnackbar } from '../components/snackbar'
 import {
    MultiSelect,
    MultiSelectChange,
@@ -10,20 +9,6 @@ import {
 } from '../components/ui'
 import styles from './HomePage.module.css'
 import { useEffect, useState } from 'react'
-
-const DEFAULT_OPTIONS: Option[] = [
-   { label: 'opcion 1', value: 1 },
-   { label: 'opcion 2', value: 2 },
-   { label: 'opcion 3', value: 3 },
-   { label: 'opcion 4', value: 4 },
-   { label: 'opcion 5', value: 5 },
-   { label: 'opcion 6', value: 6 },
-   { label: 'opcion 7', value: 7 },
-   { label: 'opcion 8', value: 8 },
-   { label: 'opcion 9', value: 9 },
-   { label: 'opcion 22', value: 22 },
-   { label: 'opcion xx', value: 0 },
-]
 
 function HomePage() {
    const { snackbar, snackbarApiResponse } = useSnackbarStore()
@@ -38,10 +23,7 @@ function HomePage() {
             const formatedOptions: Option[] = data.results.map((item: any) => ({
                label: item.name,
                value: item.id.toString(),
-               avatar: {
-                  type: 'string',
-                  content: item.image,
-               },
+               avatar: item.image,
             }))
             setOptions(formatedOptions)
          })
@@ -51,7 +33,7 @@ function HomePage() {
       <>
          <div className={styles.container}>
             <Select
-               findBy="value"
+               // findBy="value"
                options={options}
                value={select}
                onChange={(e: SelectChange) => setSelect(e.target.value)}

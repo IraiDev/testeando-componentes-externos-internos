@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect, ChangeEvent, useMemo, useCallback } from 'react'
-import { SelectorIcon } from '../../icons'
+import { CloseIcon } from '../../icons'
 import { AvatarSelect } from './AvatarSelect'
 import { Option } from './Select'
-import style from './Select.module.css'
 import { SelectDropdown } from './SelectDropdwon'
+import { SelectWrapper } from './SelectWrapper'
 
 export type ValueTypes = string[]
 export type ShowTypes = 'label' | 'avatar' | 'both'
@@ -62,17 +62,16 @@ export function MultiSelect({
 
    const handleFindInOptions = (e: ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value
+      setInputValue(value)
       if (findBy === 'label') {
-         setInputValue(value)
          setOptions(
             props.options.filter((option) =>
-               option.label.toLocaleLowerCase().includes(value.toLocaleLowerCase())
+               option.label.toLocaleLowerCase().includes(value.toLocaleLowerCase().trim())
             )
          )
          return
       }
-      setInputValue(value)
-      setOptions(props.options.filter((option) => option.value.toString() === value.toString()))
+      setOptions(props.options.filter((option) => option.value.toString() === value))
    }
 
    useEffect(() => {
@@ -89,36 +88,33 @@ export function MultiSelect({
       return () => {
          document.removeEventListener('mousedown', handleOutsideClick)
       }
+      // eslint-disable-next-line
    }, [wrapperRef])
 
    useEffect(() => {
       setOptions(props.options.filter((opt) => !props.value.includes(opt.value.toString())))
       setInputValue('')
+      // eslint-disable-next-line
    }, [props.options])
 
    return (
-      <div ref={wrapperRef} className={`${style.wrapper} ${isOpen && style['wrapper-open']}`}>
-         <div
-            onClick={handleOpenOptions}
-            className={`${style.input} ${isOpen && style['input-open']} 
-            ${isOpen && style['select-active']}
-            `}
-         >
+      <div ref={wrapperRef} className="relative">
+         <SelectWrapper isOpen={isOpen} onClick={handleOpenOptions}>
             <MultiItems
                show={show}
-               items={props.value.map((item) => item.toString())}
+               items={props.value}
                options={props.options}
                onClear={handleClearOption}
             >
                <input
+                  className={`outline-none bg-transparent ${!isOpen && 'cursor-pointer'}`}
                   ref={inputRef}
                   type="text"
                   placeholder={placeholder}
                   onChange={handleFindInOptions}
                />
             </MultiItems>
-            <SelectorIcon />
-         </div>
+         </SelectWrapper>
          <SelectDropdown items={options} isOpen={isOpen} onSelect={handleSelectOption} />
       </div>
    )
@@ -144,13 +140,13 @@ function MultiItems({
    const LiContent = useCallback(
       (item: Option) => {
          if (show === 'avatar') {
-            return <AvatarSelect type={item.avatar?.type!} avatar={item.avatar?.content} />
+            return <AvatarSelect alt={item.label} avatar={item.avatar} />
          }
 
          if (show === 'both') {
             return (
                <>
-                  <AvatarSelect type={item.avatar?.type!} avatar={item.avatar?.content} />
+                  <AvatarSelect alt={item.label} avatar={item.avatar} />
                   {item.label}
                </>
             )
@@ -161,11 +157,19 @@ function MultiItems({
    )
 
    return (
-      <ul className={style['multiple-list']}>
+      <ul className="flex flex-wrap items-center gap-1">
          {filteredOptions.map((item) => (
-            <li key={item.value}>
+            <li
+               key={item.value}
+               className="flex gap-2 items-center bg-white rounded-md shadow-md shadow-neutral-300/50 pl-2 text-xs border border-neutral-100 overflow-hidden"
+            >
                {LiContent(item)}
-               <button onClick={() => onClear(item.value.toString())}>X</button>
+               <button
+                  className="h-full w-6 grid place-content-center hover:bg-neutral-200"
+                  onClick={() => onClear(item.value.toString())}
+               >
+                  <CloseIcon />
+               </button>
             </li>
          ))}
 

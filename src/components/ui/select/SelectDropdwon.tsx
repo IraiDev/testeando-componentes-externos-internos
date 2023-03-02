@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { AvatarSelect } from './AvatarSelect'
 import { Option } from './Select'
-import style from './Select.module.css'
 
 interface Props {
    items: Option[]
@@ -21,19 +20,31 @@ export function SelectDropdown({ items = [], isOpen, onSelect, selectedValue }: 
    if (!isOpen) return null
 
    return (
-      <div className={`${style['dropdown-wrapper']} ${isOpen && style['select-active']}`}>
-         <ul className={style['dropdown-list']}>
+      <div
+         className={`
+         absolute top-full bg-neutral-100 rounded-b-xl w-full
+         overflow-hidden z-50 border-2 border-transparent border-t-0 transition-colors
+         before:content-[''] before:h-[1px] before:w-full before:block before:bg-neutral-200
+         ${isOpen && 'border-neutral-200'}
+      `}
+         // dropdown-wrapper
+      >
+         {/* dropdown-list */}
+         <ul className="p-1 pt-2 max-h-52 overflow-auto">
             {items.length > 0 &&
                items.map((item) => (
                   <li
                      key={item.value}
                      onClick={() => handleSelectItem(item)}
-                     className={
-                        selected?.value === item.value ? style['dropdown-item-active'] : ''
-                     }
+                     className={`
+                        transition flex items-center px-1 py-2 gap-2 rounded-lg 
+                        cursor-pointer hover:bg-neutral-200
+                        ${selected?.value === item.value && 'bg-indigo-500 text-white'}
+                     `}
+                     // dropdown-list-item
                   >
-                     <AvatarSelect type={item.avatar?.type!} avatar={item.avatar?.content} />
-                     {item.label}
+                     <AvatarSelect avatar={item.avatar} alt={item.label} />
+                     <span>{item.label}</span>
                   </li>
                ))}
             {items.length === 0 && <li>No hay opciones...</li>}

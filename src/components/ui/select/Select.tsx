@@ -1,16 +1,11 @@
-import { useState, useRef, useEffect, useLayoutEffect, ChangeEvent } from 'react'
-import { SelectorIcon } from '../../icons'
-import { AvatarSelect } from './AvatarSelect'
-import style from './Select.module.css'
+import { useState, useRef, useEffect, ChangeEvent, ReactNode } from 'react'
 import { SelectDropdown } from './SelectDropdwon'
+import { SelectWrapper } from './SelectWrapper'
 
 export interface Option {
    label: string
    value: string | number
-   avatar?: {
-      type: string
-      content: any
-   }
+   avatar?: string | ReactNode
 }
 
 export interface SelectChange {
@@ -37,10 +32,7 @@ export function Select({ placeholder = 'Seleccione...', findBy = 'label', ...pro
    const wrapperRef = useRef<HTMLDivElement>(null)
    const [isOpen, setIsOpen] = useState(false)
    const [options, setOptions] = useState<Option[]>(props.options)
-   const [{ avatar, type }, setAvatar] = useState<{ avatar: any; type: string }>({
-      avatar: '',
-      type: 'string',
-   })
+   const [avatar, setAvatar] = useState<string | ReactNode>('')
 
    const setInputValue = (value: string) => (inputRef.current!.value = value)
 
@@ -52,23 +44,22 @@ export function Select({ placeholder = 'Seleccione...', findBy = 'label', ...pro
    const handleSelectOption = (option: Option) => {
       setIsOpen(false)
       setInputValue(option.label)
-      setAvatar({ avatar: option.avatar?.content, type: option.avatar?.type! })
+      setAvatar(option.avatar)
       props.onChange!({ target: { value: option, type: 'text', name: props.name } })
       setOptions(props.options!)
    }
 
    const handleFindInOptions = (e: ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value
+      setInputValue(value)
       if (findBy === 'label') {
-         setInputValue(value)
          setOptions(
             props.options.filter((option) =>
-               option.label.toLocaleLowerCase().includes(value.toLocaleLowerCase())
+               option.label.toLocaleLowerCase().includes(value.toLocaleLowerCase().trim())
             )
          )
          return
       }
-      setInputValue(value)
       setOptions(props.options.filter((option) => option.value.toString() === value.toString()))
    }
 
@@ -86,32 +77,33 @@ export function Select({ placeholder = 'Seleccione...', findBy = 'label', ...pro
       return () => {
          document.removeEventListener('mousedown', handleOutsideClick)
       }
+      // eslint-disable-next-line
    }, [wrapperRef])
 
    useEffect(() => {
       const newValue = props.options.find((opt) => opt.value.toString() === props.value?.value)
       setInputValue(newValue?.label ?? '')
       setOptions(props.options)
-      setAvatar({ avatar: newValue?.avatar?.content, type: newValue?.avatar?.type! })
+      setAvatar(props.value.avatar)
+      // eslint-disable-next-line
    }, [props.options])
 
    return (
-      <div ref={wrapperRef} className={`${style.wrapper} ${isOpen && style['wrapper-open']}`}>
-         <div
+      <div ref={wrapperRef} className="relative">
+         <SelectWrapper
+            isOpen={isOpen}
+            alt={props.value.label}
+            avatar={avatar}
             onClick={handleOpenOptions}
-            className={`${style.input} ${isOpen && style['input-open']} ${
-               isOpen && style['select-active']
-            }`}
          >
-            <AvatarSelect avatar={avatar} type={type} />
             <input
+               className={`outline-none bg-transparent ${!isOpen && 'cursor-pointer'}`}
                ref={inputRef}
                type="text"
                placeholder={placeholder}
                onChange={handleFindInOptions}
             />
-            <SelectorIcon />
-         </div>
+         </SelectWrapper>
          <SelectDropdown
             items={options}
             isOpen={isOpen}

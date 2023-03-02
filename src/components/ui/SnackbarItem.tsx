@@ -67,7 +67,7 @@ export function SnackbarItem({ item, onClose }: Props) {
       >
          <li
             ref={transitionChainRef}
-            className="block py-3 px-4 pr-2 rounded-xl bg-indigo-500 shadow-lg text-white text-lg"
+            className="list-item py-3 px-4 pr-2 rounded-xl bg-indigo-500 shadow-lg text-white text-lg"
             onMouseEnter={() => handleHoldSnackbar(true)}
             onMouseLeave={() => handleHoldSnackbar(false)}
          >

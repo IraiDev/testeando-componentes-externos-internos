@@ -55,6 +55,7 @@ function HomePage() {
                      message: 'normal alert',
                      hideTime: 2000,
                      autoHide: true,
+                     maxStack: 3,
                   })
                }
             >
@@ -68,6 +69,7 @@ function HomePage() {
                      errorHideTime: 2000,
                      ok: true,
                      successHideTime: 2000,
+                     maxStack: 3,
                   })
                }
             >

@@ -2,6 +2,7 @@ import { createPortal } from 'react-dom'
 import { create } from 'zustand'
 import { SnackbarItem } from './SnackbarItem'
 import uuid from 'react-id-generator'
+import { TransitionGroup } from 'react-transition-group'
 const SNACKBAR_ROOT = document.getElementById('snackbar-root')
 
 export interface SnackbarProps {
@@ -26,11 +27,16 @@ export function Snackbar() {
    const { items: snackbars, close } = useSnackbarStore()
 
    return createPortal(
-      <ul className="flex flex-col gap-4 fixed transition bottom-3 left-3">
+      <TransitionGroup
+         component="ul"
+         className="fixed bottom-3 left-3 flex flex-col-reverse gap-4 transition-all"
+      >
+         {/* <ul className=""> */}
          {snackbars.map((item) => (
             <SnackbarItem key={item.key} item={item} onClose={close} />
          ))}
-      </ul>,
+         {/* </ul> */}
+      </TransitionGroup>,
       SNACKBAR_ROOT!
    )
 }

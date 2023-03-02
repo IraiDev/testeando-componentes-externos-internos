@@ -1,13 +1,21 @@
-export function CloseIcon() {
+export function CloseIcon({
+   size = 24,
+   color = '#2c3e50',
+   strokeWidth = 1.5,
+}: {
+   color?: string
+   size?: string | number
+   strokeWidth?: number | string
+}) {
    return (
       <svg
          xmlns="http://www.w3.org/2000/svg"
          className="icon icon-tabler icon-tabler-x text-inherit"
-         width="14"
-         height="14"
+         width={size}
+         height={size}
          viewBox="0 0 24 24"
-         strokeWidth="1.5"
-         stroke="#2c3e50"
+         strokeWidth={strokeWidth}
+         stroke={color}
          fill="none"
          strokeLinecap="round"
          strokeLinejoin="round"

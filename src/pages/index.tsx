@@ -49,10 +49,11 @@ function HomePage() {
             <span>{JSON.stringify(select)}</span>
 
             <button
+               className="bg-indigo-500 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-xl"
                onClick={() =>
                   snackbar({
                      message: 'normal alert',
-                     hideTime: 3000,
+                     hideTime: 2000,
                      autoHide: true,
                   })
                }
@@ -60,12 +61,13 @@ function HomePage() {
                Normal snackbar
             </button>
             <button
+               className="bg-indigo-500 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-xl"
                onClick={() =>
                   snackbarApiResponse({
                      message: 'api alert',
-                     errorHideTime: 3000,
+                     errorHideTime: 2000,
                      ok: true,
-                     successHideTime: 3000,
+                     successHideTime: 2000,
                   })
                }
             >

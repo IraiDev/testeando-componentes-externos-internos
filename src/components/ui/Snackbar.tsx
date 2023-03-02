@@ -2,16 +2,10 @@ import { createPortal } from 'react-dom'
 import { create } from 'zustand'
 import { SnackbarItem } from './SnackbarItem'
 import uuid from 'react-id-generator'
-import styles from './Snackbar.module.css'
 const SNACKBAR_ROOT = document.getElementById('snackbar-root')
 
-export interface SnackbarProps extends ItemProps {
+export interface SnackbarProps {
    key: string
-}
-interface Props {
-   placemente?: 'top-left' | 'bottom-left' | 'top-right' | 'bottom-right'
-}
-interface ItemProps {
    message: string
    hideTime: number
    autoHide: boolean
@@ -27,6 +21,20 @@ interface ItemProps {
       | 'light'
       | 'default'
 }
+
+export function Snackbar() {
+   const { items: snackbars, close } = useSnackbarStore()
+
+   return createPortal(
+      <ul className="flex flex-col gap-4 fixed transition bottom-3 left-3">
+         {snackbars.map((item) => (
+            <SnackbarItem key={item.key} item={item} onClose={close} />
+         ))}
+      </ul>,
+      SNACKBAR_ROOT!
+   )
+}
+
 interface SnackbarApiProps {
    message: string
    ok: boolean
@@ -34,37 +42,12 @@ interface SnackbarApiProps {
    successHideTime: number
    maxStack?: number
 }
+
 interface StoreProps {
    items: SnackbarProps[]
    close: (key: string) => void
-   snackbar: (injectedProps: ItemProps) => void
+   snackbar: (injectedProps: Omit<SnackbarProps, 'key'>) => void
    snackbarApiResponse: (injectedProps: SnackbarApiProps) => void
-}
-interface PlacementProps {
-   'top-left': string
-   'bottom-left': string
-   'top-right': string
-   'bottom-right': string
-}
-
-const PLACEMENT: PlacementProps = {
-   'bottom-left': styles['bottom-left'],
-   'bottom-right': styles['bottom-right'],
-   'top-left': styles['top-left'],
-   'top-right': styles['top-right'],
-}
-
-export function Snackbar({ placemente = 'bottom-left' }: Props) {
-   const { items: snackbars, close } = useSnackbarStore()
-
-   return createPortal(
-      <ul className={`${styles.list} ${PLACEMENT[placemente]}`}>
-         {snackbars.map((item) => (
-            <SnackbarItem key={item.key} item={item} onClose={close} />
-         ))}
-      </ul>,
-      SNACKBAR_ROOT!
-   )
 }
 
 export const useSnackbarStore = create<StoreProps>((set) => ({

@@ -17,7 +17,7 @@ export function SelectWrapper({ onClick, isOpen, avatar, alt, children }: Props)
             flex items-center gap-2 w-full p-3 pr-1 rounded-xl border-2 border-transparent transition
             ${
                isOpen
-                  ? 'rounded-b-none border-neutral-200 border-b-transparent bg-white'
+                  ? 'rounded-b-none border-neutral-300 border-b-transparent bg-white'
                   : 'bg-neutral-100 cursor-pointer hover:border-indigo-500'
             }
          `}

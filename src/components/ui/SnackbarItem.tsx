@@ -1,10 +1,10 @@
 import { isEqual } from 'lodash'
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState, useCallback } from 'react'
 import { CSSTransition } from 'react-transition-group'
+import { CloseIcon } from '../icons'
 import { SnackbarProps } from './'
-import styles from './Snackbar.module.css'
 
-const ANIMATION_DURATION = 500 // en ms
+const TIMEOUT_ANIMATION = 800 // en ms
 
 interface Props {
    item: SnackbarProps
@@ -12,18 +12,22 @@ interface Props {
 }
 
 export function SnackbarItem({ item, onClose }: Props) {
+   const transitionChainRef = useRef(null)
    const [localItem, setLocalItem] = useState<SnackbarProps>(item)
    const [holdSnackbar, setHoldSnackbar] = useState(false)
    const [isShowing, setIsShowing] = useState(false)
 
    const handleHoldSnackbar = (newState: boolean) => setHoldSnackbar(newState)
 
-   const handleClose = (key: string) => {
-      setIsShowing(false)
-      setTimeout(() => {
-         onClose(key)
-      }, ANIMATION_DURATION)
-   }
+   const handleClose = useCallback(
+      (key: string) => {
+         setIsShowing(false)
+         setTimeout(() => {
+            onClose(key)
+         }, TIMEOUT_ANIMATION)
+      },
+      [onClose]
+   )
 
    useLayoutEffect(() => setIsShowing(true), []) // para gatillar la animacion
 
@@ -46,29 +50,34 @@ export function SnackbarItem({ item, onClose }: Props) {
       return () => {
          clearTimeout(timeout)
       }
-   }, [localItem, holdSnackbar])
+   }, [localItem, holdSnackbar, handleClose])
 
    return (
       <CSSTransition
+         nodeRef={transitionChainRef}
          unmountOnExit
          in={isShowing}
-         timeout={ANIMATION_DURATION}
+         timeout={TIMEOUT_ANIMATION}
          classNames={{
-            enter: styles['animation-enter'],
-            exit: styles['animation-exit'],
-            enterActive: styles['animation-enter-active'],
-            exitActive: styles['animation-exit-active'],
+            enter: 'animate-snackbar-enter',
+            exit: 'animate-snackbar-exit',
+            enterActive: 'opacity-1',
+            exitActive: 'opacity-0',
          }}
       >
          <li
-            className={styles.wrapper}
+            ref={transitionChainRef}
+            className="block py-3 px-4 pr-2 rounded-xl bg-indigo-500 shadow-lg text-white text-lg"
             onMouseEnter={() => handleHoldSnackbar(true)}
             onMouseLeave={() => handleHoldSnackbar(false)}
          >
-            <div className={styles.container}>
+            <div className="flex justify-between items-start w-72">
                <span>{item.message}</span>
-               <button onClick={() => handleClose(item.key)} className={styles.closer}>
-                  +
+               <button
+                  onClick={() => handleClose(item.key)}
+                  className="text-white hover:bg-white/10 rounded-full h-8 w-8 grid place-content-center"
+               >
+                  <CloseIcon size={20} color="#fff" strokeWidth={2.5} />
                </button>
             </div>
          </li>

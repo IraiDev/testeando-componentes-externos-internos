@@ -168,7 +168,7 @@ function MultiItems({
                   className="h-full w-6 grid place-content-center hover:bg-neutral-200"
                   onClick={() => onClear(item.value.toString())}
                >
-                  <CloseIcon />
+                  <CloseIcon size={18} strokeWidth={1.7} />
                </button>
             </li>
          ))}

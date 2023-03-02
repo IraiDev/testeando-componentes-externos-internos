@@ -25,7 +25,7 @@ export function SelectDropdown({ items = [], isOpen, onSelect, selectedValue }: 
          absolute top-full bg-neutral-100 rounded-b-xl w-full
          overflow-hidden z-50 border-2 border-transparent border-t-0 transition-colors
          before:content-[''] before:h-[1px] before:w-full before:block before:bg-neutral-200
-         ${isOpen && 'border-neutral-200'}
+         ${isOpen && 'border-neutral-300'}
       `}
          // dropdown-wrapper
       >
@@ -47,7 +47,9 @@ export function SelectDropdown({ items = [], isOpen, onSelect, selectedValue }: 
                      <span>{item.label}</span>
                   </li>
                ))}
-            {items.length === 0 && <li>No hay opciones...</li>}
+            {items.length === 0 && (
+               <li className="px-1 py-2 text-neutral-300">No hay opciones...</li>
+            )}
          </ul>
       </div>
    )

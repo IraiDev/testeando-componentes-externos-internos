@@ -7,7 +7,6 @@ import {
    useSnackbarStore,
    ValueTypes,
 } from '../components/ui'
-import styles from './HomePage.module.css'
 import { useEffect, useState } from 'react'
 
 function HomePage() {
@@ -31,7 +30,7 @@ function HomePage() {
 
    return (
       <>
-         <div className={styles.container}>
+         <div className="container mx-auto h-screen grid place-content-center max-w-lg gap-4">
             <Select
                // findBy="value"
                options={options}
@@ -40,7 +39,7 @@ function HomePage() {
             />
 
             <MultiSelect
-               show="both"
+               labelDisplay="both"
                options={options}
                value={multiSelect}
                onChange={(e: MultiSelectChange) => setMultiSelect(e.target.value)}

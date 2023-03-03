@@ -27,16 +27,18 @@ export function Snackbar() {
    const { items: snackbars, close } = useSnackbarStore()
 
    return createPortal(
-      <TransitionGroup
-         component="ul"
-         className="fixed bottom-3 left-3 flex flex-col-reverse gap-4 transition-all"
-      >
-         {/* <ul className=""> */}
-         {snackbars.map((item) => (
-            <SnackbarItem key={item.key} item={item} onClose={close} />
-         ))}
-         {/* </ul> */}
-      </TransitionGroup>,
+      <div className="fixed bottom-3 left-3">
+         <TransitionGroup
+            component="ul"
+            className="flex flex-col-reverse gap-4 transition-all h-auto"
+         >
+            {/* <ul className=""> */}
+            {snackbars.map((item) => (
+               <SnackbarItem key={item.key} item={item} onClose={close} />
+            ))}
+            {/* </ul> */}
+         </TransitionGroup>
+      </div>,
       SNACKBAR_ROOT!
    )
 }

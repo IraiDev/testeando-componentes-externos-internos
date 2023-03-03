@@ -6,7 +6,7 @@ import { SelectDropdown } from './SelectDropdwon'
 import { SelectWrapper } from './SelectWrapper'
 
 export type ValueTypes = string[]
-export type ShowTypes = 'label' | 'avatar' | 'both'
+export type LabelDisplay = 'label' | 'avatar' | 'both'
 
 export interface MultiSelectChange {
    target: {
@@ -25,13 +25,13 @@ interface Props {
    disabled?: boolean
    placeholder?: string
    findBy?: 'value' | 'label'
-   show?: ShowTypes
+   labelDisplay?: LabelDisplay
 }
 
 export function MultiSelect({
    placeholder = 'Seleccione...',
    findBy = 'label',
-   show = 'label',
+   labelDisplay = 'label',
    ...props
 }: Props) {
    const inputRef = useRef<HTMLInputElement>(null)
@@ -101,7 +101,8 @@ export function MultiSelect({
       <div ref={wrapperRef} className="relative">
          <SelectWrapper isOpen={isOpen} onClick={handleOpenOptions}>
             <MultiItems
-               show={show}
+               isOpen={isOpen}
+               labelDisplay={labelDisplay}
                items={props.value}
                options={props.options}
                onClear={handleClearOption}
@@ -124,13 +125,15 @@ function MultiItems({
    children,
    items,
    options,
-   show = 'label',
+   labelDisplay = 'label',
+   isOpen,
    onClear,
 }: {
    children: React.ReactNode
    items: string[]
+   isOpen?: boolean
    options: Option[]
-   show?: ShowTypes
+   labelDisplay?: LabelDisplay
    onClear: (key: string) => void
 }) {
    const filteredOptions = useMemo(() => {
@@ -139,11 +142,11 @@ function MultiItems({
 
    const LiContent = useCallback(
       (item: Option) => {
-         if (show === 'avatar') {
+         if (labelDisplay === 'avatar') {
             return <AvatarSelect alt={item.label} avatar={item.avatar} />
          }
 
-         if (show === 'both') {
+         if (labelDisplay === 'both') {
             return (
                <>
                   <AvatarSelect alt={item.label} avatar={item.avatar} />
@@ -153,7 +156,7 @@ function MultiItems({
          }
          return item.label
       },
-      [show]
+      [labelDisplay]
    )
 
    return (
@@ -161,11 +164,15 @@ function MultiItems({
          {filteredOptions.map((item) => (
             <li
                key={item.value}
-               className="flex gap-2 items-center bg-white rounded-md shadow-md shadow-neutral-300/50 pl-2 text-xs border border-neutral-100 overflow-hidden"
+               className={`
+               flex gap-2 items-center bg-white rounded-md shadow-md shadow-neutral-300/50 pl-2 text-xs 
+               transition border overflow-hidden
+               ${isOpen ? 'border-neutral-200' : 'border-transparent'}
+               `}
             >
                {LiContent(item)}
                <button
-                  className="h-full w-6 grid place-content-center hover:bg-neutral-200"
+                  className="h-9 w-7 grid place-content-center hover:bg-neutral-200"
                   onClick={() => onClear(item.value.toString())}
                >
                   <CloseIcon size={18} strokeWidth={1.7} />

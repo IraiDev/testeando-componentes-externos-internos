@@ -23,9 +23,8 @@ export function SelectDropdown({ items = [], isOpen, onSelect, selectedValue }: 
       <div
          className={`
          absolute top-full bg-neutral-100 rounded-b-xl w-full
-         overflow-hidden z-50 border-2 border-transparent border-t-0 transition-colors
-         before:content-[''] before:h-[1px] before:w-full before:block before:bg-neutral-200
-         ${isOpen && 'border-neutral-300'}
+         overflow-hidden z-50 border-2 border-t-0 transition-colors
+         ${isOpen ? 'border-neutral-200' : 'border-transparent'}
       `}
          // dropdown-wrapper
       >

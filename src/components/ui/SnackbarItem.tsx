@@ -67,19 +67,17 @@ export function SnackbarItem({ item, onClose }: Props) {
       >
          <li
             ref={transitionChainRef}
-            className="list-item py-3 px-4 pr-2 rounded-xl bg-indigo-500 shadow-lg text-white text-lg"
+            className="flex justify-between items-start w-72 py-3 px-4 pr-2 rounded-xl bg-indigo-500 shadow-lg text-white text-lg"
             onMouseEnter={() => handleHoldSnackbar(true)}
             onMouseLeave={() => handleHoldSnackbar(false)}
          >
-            <div className="flex justify-between items-start w-72">
-               <span>{item.message}</span>
-               <button
-                  onClick={() => handleClose(item.key)}
-                  className="text-white hover:bg-white/10 rounded-full h-8 w-8 grid place-content-center"
-               >
-                  <CloseIcon size={20} color="#fff" strokeWidth={2.5} />
-               </button>
-            </div>
+            <span>{item.message}</span>
+            <button
+               onClick={() => handleClose(item.key)}
+               className="text-white hover:bg-white/10 rounded-full h-8 w-8 grid place-content-center"
+            >
+               <CloseIcon size={20} color="#fff" strokeWidth={2.5} />
+            </button>
          </li>
       </CSSTransition>
    )

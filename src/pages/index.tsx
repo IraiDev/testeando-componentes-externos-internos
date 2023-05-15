@@ -1,82 +1,32 @@
-import {
-   MultiSelect,
-   MultiSelectChange,
-   Option,
-   Select,
-   SelectChange,
-   useSnackbarStore,
-   ValueTypes,
-} from '../components/ui'
-import { useEffect, useState } from 'react'
+import { Value } from "react-calendar/dist/cjs/shared/types";
+import { DatePicket } from "../components/DatePicket";
+import { useState } from "react";
+
+const dates = [
+  "2023-05-09",
+  "2023-05-10",
+  "2023-05-11",
+  "2023-05-13",
+  "2023-05-15",
+  "2023-05-16",
+  "2023-05-17",
+  "2023-05-18",
+  "2023-05-19",
+  "2023-05-20",
+  "2023-05-21",
+  "2023-05-22",
+  "2023-05-23",
+  "2023-06-11",
+  "2023-06-12",
+];
 
 function HomePage() {
-   const { snackbar, snackbarApiResponse } = useSnackbarStore()
-   const [select, setSelect] = useState<Option>({ label: 'Summer Smith', value: '3' })
-   const [multiSelect, setMultiSelect] = useState<ValueTypes>(['5', '1'])
-   const [options, setOptions] = useState<Option[]>([])
-
-   useEffect(() => {
-      fetch('https://rickandmortyapi.com/api/character')
-         .then((resp) => resp.json())
-         .then((data) => {
-            const formatedOptions: Option[] = data.results.map((item: any) => ({
-               label: item.name,
-               value: item.id.toString(),
-               avatar: item.image,
-            }))
-            setOptions(formatedOptions)
-         })
-   }, [])
-
-   return (
-      <>
-         <div className="container mx-auto h-screen grid place-content-center max-w-lg gap-4">
-            <Select
-               // findBy="value"
-               options={options}
-               value={select}
-               onChange={(e: SelectChange) => setSelect(e.target.value)}
-            />
-
-            <MultiSelect
-               labelDisplay="both"
-               options={options}
-               value={multiSelect}
-               onChange={(e: MultiSelectChange) => setMultiSelect(e.target.value)}
-            />
-
-            <span>{JSON.stringify(select)}</span>
-
-            <button
-               className="bg-indigo-500 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-xl"
-               onClick={() =>
-                  snackbar({
-                     message: 'normal alert',
-                     hideTime: 2000,
-                     autoHide: true,
-                     maxStack: 3,
-                  })
-               }
-            >
-               Normal snackbar
-            </button>
-            <button
-               className="bg-indigo-500 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-xl"
-               onClick={() =>
-                  snackbarApiResponse({
-                     message: 'api alert',
-                     errorHideTime: 2000,
-                     ok: true,
-                     successHideTime: 2000,
-                     maxStack: 3,
-                  })
-               }
-            >
-               API snackbar
-            </button>
-         </div>
-      </>
-   )
+  const [date, setDate] = useState<Value | null>(null);
+  return (
+    <main className="h-screen w-full flex items-center justify-center">
+      <DatePicket dates={dates} value={date} onChange={setDate} />
+    </main>
+  );
 }
 
-export default HomePage
+export default HomePage;

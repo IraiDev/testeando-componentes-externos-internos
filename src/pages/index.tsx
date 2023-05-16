@@ -1,5 +1,5 @@
 import { Value } from "react-calendar/dist/cjs/shared/types";
-import { DatePicket } from "../components/DatePicket";
+import { DatePicker, dateFormater } from "../components/DatePicker";
 import { useState } from "react";
 
 const dates = [
@@ -23,8 +23,9 @@ const dates = [
 function HomePage() {
   const [date, setDate] = useState<Value | null>(null);
   return (
-    <main className="h-screen w-full flex items-center justify-center">
-      <DatePicket dates={dates} value={date} onChange={setDate} />
+    <main className="h-screen w-full flex flex-col items-center justify-center">
+      <DatePicker label="Fecha" dates={dates} value={date} onChange={setDate} />
+      <span className="block mx-auto">{dateFormater(date)}</span>
     </main>
   );
 }
